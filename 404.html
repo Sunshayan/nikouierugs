@@ -315,7 +315,7 @@ section{padding-block:clamp(56px,8vw,112px)}
 .garr.l{left:8px}.garr.r{right:8px}
 .card:hover .garr,.card:focus-within .garr{opacity:1}
 .garr:hover{background:var(--ink);color:var(--paper)}
-@media (hover:none){.garr{opacity:.9}}
+@media (hover:none){.garr{opacity:1;background:transparent;border:0;box-shadow:none;color:var(--ink);width:34px;height:34px}.garr svg{width:10px;height:16px;filter:drop-shadow(0 0 2px rgba(255,255,255,.9))}.garr.l{left:2px}.garr.r{right:2px}.garr:hover{background:transparent;color:var(--ink)}}
 .gdots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:6px;pointer-events:none}
 .gdots i{width:5px;height:5px;border-radius:50%;background:rgba(28,25,22,.22);transition:background .2s,transform .2s}
 .gdots i.on{background:var(--ink);transform:scale(1.25)}
@@ -487,7 +487,7 @@ form.trade .fine{grid-column:1/-1;color:var(--muted);font-size:.84rem;line-heigh
 .card:hover .add,.card .add.on{opacity:1}
 .card .add svg{width:14px;height:14px}
 .card .add.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-@media (hover:none){.card .add{opacity:1}}
+@media (hover:none){.card .add{opacity:1;background:transparent;border:0;color:var(--ink)}.card .add svg{width:16px;height:16px;filter:drop-shadow(0 0 2px rgba(255,255,255,.9))}.card .add.on{background:var(--ink);color:var(--paper)}}
 </style>
 
 <header class="site" id="hdr">
