@@ -320,6 +320,9 @@ section{padding-block:clamp(56px,8vw,112px)}
 .gdots i{width:5px;height:5px;border-radius:50%;background:rgba(28,25,22,.22);transition:background .2s,transform .2s}
 .gdots i.on{background:var(--ink);transform:scale(1.25)}
 .stage.gal{padding:0;background:#dcd8cf}
+.stage .parr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;border-radius:0;background:rgba(255,255,255,.88);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.stage .parr svg{width:10px;height:16px}.stage .parr.l{left:10px}.stage .parr.r{right:10px}.stage .parr:hover{background:var(--ink);color:var(--paper)}
+.stage .gdots{top:14px;bottom:auto}.stage .gdots i{width:7px;height:7px;background:rgba(28,25,22,.3)}.stage #mainimg.swap{opacity:.35}.stage #mainimg{transition:opacity .2s}
 .stage.gal img{mix-blend-mode:normal;width:100%;height:auto;max-height:none;display:block}
 @media (min-width:901px){.stage.gal img{max-height:min(86vh,1000px);width:auto;max-width:100%;margin:0 auto}}
 .card .meta{display:grid;gap:3px}
@@ -866,6 +869,7 @@ function piece(c){
     <div class="crumb"><a href="#home">Home</a> / <a href="#carpets">Premium Carpets</a> / ${esc(c.en)}</div>
     <div class="piece">
       <div class="stage${c.gal?" gal":""}"><img id="mainimg" src="${c.gal?c.gal[0].v:img(c,"view")}" alt="${esc(c.en)}, full view"${c.gal?"":` width="${c.w}" height="${c.h}"`}>
+        ${c.gal&&c.gal.length>1?`<button class="parr l" type="button" aria-label="Previous photo"><svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1 2 8l6 7"/></svg></button><button class="parr r" type="button" aria-label="Next photo"><svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m2 1 6 7-6 7"/></svg></button><div class="gdots">${c.gal.map((_,k)=>`<i${k?"":' class="on"'}></i>`).join("")}</div>`:""}
         <button class="inspect" id="inspect">Inspect full resolution</button></div>
       <div class="info">
         <div style="display:grid;gap:10px"><span class="cap muted">${esc(c.shop==="Unrecorded"?"Isfahan":c.shop)} · ${esc(c.cat==="Rugs"?"Rug":c.cat==="Carpets"?"Carpet":c.cat==="Square"?"Square carpet":"Pictorial")}</span>
@@ -1196,7 +1200,13 @@ function route(){navDepth++;
       v.src="img/lux-bg.mp4";v.preload="auto";v.play().catch(()=>{})})();
     app.querySelectorAll(".tools select").forEach(s=>s.onchange=()=>{F[s.dataset.k]=s.value;renderGrid()});
     document.getElementById("clear").onclick=clearF;document.getElementById("clear2").onclick=clearF}
-  if(c){app.querySelectorAll(".dslot.has").forEach(b=>b.onclick=()=>inspect(c,c.details[+b.dataset.d]));const go=()=>inspect(c,c.gal?c.gal[0].f:undefined);document.getElementById("inspect").onclick=go;document.getElementById("mainimg").onclick=go;
+  if(c){app.querySelectorAll(".dslot.has").forEach(b=>b.onclick=()=>inspect(c,c.details[+b.dataset.d]));let gi=0;const go=()=>inspect(c,c.gal?c.gal[gi].f:undefined);document.getElementById("inspect").onclick=go;document.getElementById("mainimg").onclick=go;
+    if(c.gal&&c.gal.length>1){const st=app.querySelector(".stage"),im=document.getElementById("mainimg"),n=c.gal.length;
+      const step=d=>{gi=(gi+d+n)%n;const want=gi;im.classList.add("swap");const nx=new Image();nx.onload=()=>{if(want!==gi)return;im.src=nx.src;im.classList.remove("swap")};nx.src=c.gal[gi].v;
+        st.querySelectorAll(".gdots i").forEach((d2,k)=>d2.classList.toggle("on",k===gi))};
+      st.querySelector(".parr.l").onclick=e=>{e.stopPropagation();step(-1)};st.querySelector(".parr.r").onclick=e=>{e.stopPropagation();step(1)};
+      let tx=null,ty=0;st.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+      st.addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;tx=null;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5)step(dx<0?1:-1)},{passive:true})}
     app.querySelectorAll("[data-ref]").forEach(a=>a.onclick=()=>{tradeRef=a.dataset.ref})}
   app.querySelectorAll("[data-shop]").forEach(b=>b.onclick=()=>{F.cat=F.colour=F.size="";F.shop=b.dataset.shop;location.hash="carpets"});
   updateBag();
