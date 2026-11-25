@@ -147,6 +147,7 @@ html.fa .frieze,html.fa .hunt,html.fa .anat,html.fa .stage,html.fa .vhead video,
 html.fa .frieze .cap-line{direction:rtl}
 html.fa p,html.fa dd,html.fa li,html.fa .ref,html.fa .sz,html.fa .count,html.fa .crumb{unicode-bidi:plaintext}
 html.fa .specs dd,html.fa .ref,html.fa .sz{text-align:right}
+html.fa .story .text p,html.fa .prose p{direction:ltr;unicode-bidi:isolate;text-align:left}
 html.fa .ref span,html.fa .sz span,html.fa .contact-line b{unicode-bidi:isolate;direction:ltr;display:inline-block}
 `;
 function loginPage(){return `<div class="in"><form class="nkl" id="nkLogin"><div><span class="cap muted">Staff</span><h1 style="margin:6px 0 0">Sign in</h1><p class="muted" style="margin:6px 0 0">ورود همکاران</p></div>
